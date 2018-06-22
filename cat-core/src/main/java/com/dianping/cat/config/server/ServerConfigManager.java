@@ -8,15 +8,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.codehaus.plexus.logging.LogEnabled;
-import org.codehaus.plexus.logging.Logger;
 import org.unidal.helper.Files;
 import org.unidal.helper.Splitters;
+import org.unidal.lookup.logging.LogEnabled;
+import org.unidal.lookup.logging.Logger;
 import org.unidal.lookup.util.StringUtils;
 import org.unidal.tuple.Pair;
 
 import com.dianping.cat.Constants;
-import com.dianping.cat.configuration.NetworkInterfaceManager;
 import com.dianping.cat.configuration.server.entity.ConsoleConfig;
 import com.dianping.cat.configuration.server.entity.Domain;
 import com.dianping.cat.configuration.server.entity.HdfsConfig;
@@ -80,7 +79,7 @@ public class ServerConfigManager implements LogEnabled {
 			}
 		}
 
-		return "";
+		return "127.0.0.1:2281";
 	}
 
 	public String getHdfsBaseDir(String id) {
@@ -241,9 +240,6 @@ public class ServerConfigManager implements LogEnabled {
 			m_config = config;
 		}
 
-		if (m_config.isLocalMode()) {
-			m_logger.warn("CAT server is running in LOCAL mode! No HDFS or MySQL will be accessed!");
-		}
 		m_logger.info("CAT server is running with hdfs," + isHdfsOn());
 		m_logger.info("CAT server is running with alert," + isAlertMachine());
 		m_logger.info("CAT server is running with job," + isJobMachine());
@@ -253,13 +249,8 @@ public class ServerConfigManager implements LogEnabled {
 	public boolean isAlertMachine() {
 		if (m_config != null) {
 			boolean alert = m_config.isAlertMachine();
-			String ip = NetworkInterfaceManager.INSTANCE.getLocalHostAddress();
 
-			if ("10.1.6.128".equals(ip) || alert) {
-				return true;
-			} else {
-				return false;
-			}
+			return alert;
 		} else {
 			return false;
 		}
@@ -280,14 +271,6 @@ public class ServerConfigManager implements LogEnabled {
 	public boolean isJobMachine() {
 		if (m_config != null) {
 			return m_config.isJobMachine();
-		} else {
-			return true;
-		}
-	}
-
-	public boolean isLocalMode() {
-		if (m_config != null) {
-			return m_config.isLocalMode();
 		} else {
 			return true;
 		}

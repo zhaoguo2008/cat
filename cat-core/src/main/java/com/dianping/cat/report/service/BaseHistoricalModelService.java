@@ -1,8 +1,8 @@
 package com.dianping.cat.report.service;
 
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.unidal.lookup.annotation.Inject;
+import org.unidal.lookup.extension.Initializable;
+import org.unidal.lookup.extension.InitializationException;
 
 import com.dianping.cat.config.server.ServerConfigManager;
 import com.dianping.cat.message.Message;
@@ -13,8 +13,6 @@ public abstract class BaseHistoricalModelService<T> extends ModelServiceWithCalS
 
 	@Inject
 	private ServerConfigManager m_manager;
-
-	private boolean m_localMode = true;
 
 	private String m_name;
 
@@ -31,7 +29,6 @@ public abstract class BaseHistoricalModelService<T> extends ModelServiceWithCalS
 
 	@Override
 	public void initialize() throws InitializationException {
-		m_localMode = m_manager.isLocalMode();
 	}
 
 	@Override
@@ -59,10 +56,6 @@ public abstract class BaseHistoricalModelService<T> extends ModelServiceWithCalS
 	@Override
 	public boolean isEligable(ModelRequest request) {
 		return request.getPeriod().isHistorical();
-	}
-
-	protected boolean isLocalMode() {
-		return m_localMode;
 	}
 
 	@Override

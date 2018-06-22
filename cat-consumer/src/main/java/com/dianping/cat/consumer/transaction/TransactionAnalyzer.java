@@ -2,16 +2,14 @@ package com.dianping.cat.consumer.transaction;
 
 import java.util.ConcurrentModificationException;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import org.codehaus.plexus.logging.LogEnabled;
-import org.codehaus.plexus.logging.Logger;
 import org.unidal.lookup.annotation.Inject;
+import org.unidal.lookup.logging.LogEnabled;
+import org.unidal.lookup.logging.Logger;
 import org.unidal.tuple.Pair;
 
 import com.dianping.cat.Cat;
-import com.dianping.cat.Constants;
 import com.dianping.cat.analysis.AbstractMessageAnalyzer;
 import com.dianping.cat.config.server.ServerFilterConfigManager;
 import com.dianping.cat.consumer.transaction.model.entity.Duration;
@@ -24,8 +22,8 @@ import com.dianping.cat.message.Event;
 import com.dianping.cat.message.Message;
 import com.dianping.cat.message.Transaction;
 import com.dianping.cat.message.spi.MessageTree;
-import com.dianping.cat.report.ReportManager;
 import com.dianping.cat.report.DefaultReportManager.StoragePolicy;
+import com.dianping.cat.report.ReportManager;
 
 public class TransactionAnalyzer extends AbstractMessageAnalyzer<TransactionReport> implements LogEnabled {
 
@@ -85,7 +83,7 @@ public class TransactionAnalyzer extends AbstractMessageAnalyzer<TransactionRepo
 
 	@Override
 	public synchronized void doCheckpoint(boolean atEnd) {
-		if (atEnd && !isLocalMode()) {
+		if (atEnd) {
 			m_reportManager.storeHourlyReports(getStartTime(), StoragePolicy.FILE_AND_DB, m_index);
 		} else {
 			m_reportManager.storeHourlyReports(getStartTime(), StoragePolicy.FILE, m_index);
@@ -98,7 +96,7 @@ public class TransactionAnalyzer extends AbstractMessageAnalyzer<TransactionRepo
 	}
 
 	@Override
-	public int getAnanlyzerCount() {
+	public int getAnalyzerCount() {
 		return 2;
 	}
 
@@ -114,22 +112,16 @@ public class TransactionAnalyzer extends AbstractMessageAnalyzer<TransactionRepo
 
 	@Override
 	public TransactionReport getReport(String domain) {
-		if (!Constants.ALL.equals(domain)) {
+		try {
+			return queryReport(domain);
+		} catch (Exception e) {
 			try {
 				return queryReport(domain);
-			} catch (Exception e) {
-				try {
-					return queryReport(domain);
-					// for concurrent modify exception
-				} catch (ConcurrentModificationException ce) {
-					Cat.logEvent("ConcurrentModificationException", domain, Event.SUCCESS, null);
-					return new TransactionReport(domain);
-				}
+				// for concurrent modify exception
+			} catch (ConcurrentModificationException ce) {
+				Cat.logEvent("ConcurrentModificationException", domain, Event.SUCCESS, null);
+				return new TransactionReport(domain);
 			}
-		} else {
-			Map<String, TransactionReport> reports = m_reportManager.getHourlyReports(getStartTime());
-
-			return m_delegate.createAggregatedReport(reports);
 		}
 	}
 
@@ -219,24 +211,14 @@ public class TransactionAnalyzer extends AbstractMessageAnalyzer<TransactionRepo
 		name.incTotalCount();
 
 		if (t.isSuccess()) {
-			if (type.getSuccessMessageUrl() == null) {
-				type.setSuccessMessageUrl(messageId);
-			}
-
-			if (name.getSuccessMessageUrl() == null) {
-				name.setSuccessMessageUrl(messageId);
-			}
+			type.setSuccessMessageUrl(messageId);
+			name.setSuccessMessageUrl(messageId);
 		} else {
 			type.incFailCount();
 			name.incFailCount();
 
-			if (type.getFailMessageUrl() == null) {
-				type.setFailMessageUrl(messageId);
-			}
-
-			if (name.getFailMessageUrl() == null) {
-				name.setFailMessageUrl(messageId);
-			}
+			type.setFailMessageUrl(messageId);
+			name.setFailMessageUrl(messageId);
 		}
 
 		int allDuration = ((int) computeDuration(duration));

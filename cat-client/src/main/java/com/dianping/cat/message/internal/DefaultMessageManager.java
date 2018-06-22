@@ -9,14 +9,13 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Stack;
 
-import org.codehaus.plexus.logging.LogEnabled;
-import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.unidal.lookup.ContainerHolder;
 import org.unidal.lookup.annotation.Inject;
+import org.unidal.lookup.extension.Initializable;
+import org.unidal.lookup.extension.InitializationException;
+import org.unidal.lookup.logging.LogEnabled;
+import org.unidal.lookup.logging.Logger;
 
-import com.dianping.cat.Cat;
 import com.dianping.cat.configuration.ClientConfigManager;
 import com.dianping.cat.configuration.NetworkInterfaceManager;
 import com.dianping.cat.configuration.client.entity.Domain;
@@ -126,24 +125,20 @@ public class DefaultMessageManager extends ContainerHolder implements MessageMan
 	}
 
 	private Context getContext() {
-		if (Cat.isInitialized()) {
-			Context ctx = m_context.get();
+		Context ctx = m_context.get();
 
-			if (ctx != null) {
-				return ctx;
+		if (ctx != null) {
+			return ctx;
+		} else {
+			if (m_domain != null) {
+				ctx = new Context(m_domain.getId(), m_hostName, m_domain.getIp());
 			} else {
-				if (m_domain != null) {
-					ctx = new Context(m_domain.getId(), m_hostName, m_domain.getIp());
-				} else {
-					ctx = new Context("Unknown", m_hostName, "");
-				}
-
-				m_context.set(ctx);
-				return ctx;
+				ctx = new Context("Unknown", m_hostName, "");
 			}
-		}
 
-		return null;
+			m_context.set(ctx);
+			return ctx;
+		}
 	}
 
 	@Override
@@ -552,7 +547,7 @@ public class DefaultMessageManager extends ContainerHolder implements MessageMan
 				String childId = nextMessageId();
 				DefaultTransaction source = (DefaultTransaction) message;
 				DefaultTransaction target = new DefaultTransaction(source.getType(), source.getName(),
-						DefaultMessageManager.this);
+				      DefaultMessageManager.this);
 
 				target.setTimestamp(source.getTimestamp());
 				target.setDurationInMicros(source.getDurationInMicros());

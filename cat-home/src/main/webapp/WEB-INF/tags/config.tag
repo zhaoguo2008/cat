@@ -16,9 +16,6 @@
 						<button class="btn btn-success" id="tab_realtime">
 							<i class="ace-icon fa fa-signal"></i>&nbsp;&nbsp;实时
 						</button>
-						<!-- <button class="btn btn-grey" id="tab_offtime">
-							<i class="ace-icon fa fa-film"></i>&nbsp;&nbsp;离线
-						</button> -->
 						<!-- #section:basics/sidebar.layout.shortcuts -->
 						<button class="btn btn-warning" id="tab_document">
 							<i class="ace-icon fa fa-users"></i>&nbsp;&nbsp;文档
@@ -48,40 +45,6 @@
 								<b class="arrow"></b></li>
 						</ul>
 					</li>
-					<%-- <li id="userMonitor_config" class="hsub" >
-						<a href="/cat/s/config?op=aggregations"  class="dropdown-toggle"><i class="menu-icon fa  fa-users"></i><span class="menu-text">用户监控配置</span>
-						<b class="arrow fa fa-angle-down"></b>
-						</a><b class="arrow"></b>
-						<ul class="submenu">
-							<li id="aggregations"><a href="/cat/s/config?op=aggregations">
-								<i class="menu-icon fa fa-caret-right"></i>Js报错</a>
-								<b class="arrow"></b></li>
-							<li id="urlPatternConfigUpdate"><a href="/cat/s/config?op=urlPatternConfigUpdate" style="display:none">
-								<i class="menu-icon fa fa-caret-right"></i>Web全局配置</a>
-								<b class="arrow"></b></li>
-							<li id="urlPatterns"><a href="/cat/s/config?op=urlPatterns">
-								<i class="menu-icon fa fa-caret-right"></i>Web监控</a>
-								<b class="arrow"></b></li>
-							<li id="webRule"><a href="/cat/s/config?op=webRule">
-								<i class="menu-icon fa fa-caret-right"></i>Web告警</a>
-								<b class="arrow"></b></li>
-							<li id="appList"><a href="/cat/s/config?op=appList">
-								<i class="menu-icon fa fa-caret-right"></i>App监控</a>
-								<b class="arrow"></b></li>
-							<li id="appCommandFormatConfig"><a href="/cat/s/config?op=appCommandFormatConfig">
-								<i class="menu-icon fa fa-caret-right"></i>命令字规则</a>
-								<b class="arrow"></b></li>
-							<li id="appConfigUpdate"><a href="/cat/s/config?op=appConfigUpdate" style="display:none">
-								<i class="menu-icon fa fa-caret-right"></i>App全局</a>
-								<b class="arrow"></b></li>
-							<li id="appRule"><a href="/cat/s/config?op=appRule">
-								<i class="menu-icon fa fa-caret-right"></i>App告警</a>
-								<b class="arrow"></b></li>
-							<li id="appComparisonConfigUpdate" style="display:none"><a href="/cat/s/config?op=appComparisonConfigUpdate">
-								<i class="menu-icon fa fa-caret-right"></i>对比美团</a>
-								<b class="arrow"></b></li>
-						</ul>
-					</li> --%>
 					<li id="application_config" class="hsub">
 					<a href="/cat/s/config?op=metricConfigList" class="dropdown-toggle"> <i class="menu-icon fa  fa-cloud"></i> <span class="menu-text">应用监控配置</span>
 						<b class="arrow fa fa-angle-down"></b>
@@ -99,9 +62,6 @@
 							<li id="eventRule"><a href="/cat/s/config?op=eventRule">
 								<i class="menu-icon fa fa-caret-right"></i>Event告警</a>
 								<b class="arrow"></b></li>
-							<li id="allReportConfig"><a href="/cat/s/config?op=allReportConfig">
-								<i class="menu-icon fa fa-caret-right"></i>报表合并配置</a>
-								<b class="arrow"></b></li>
 							<li id="exception"><a href="/cat/s/config?op=exception">
 								<i class="menu-icon fa fa-caret-right"></i>异常告警配置</a>
 								<b class="arrow"></b></li>
@@ -111,10 +71,10 @@
 							<li id="heartbeatRuleConfigList"><a href="/cat/s/config?op=heartbeatRuleConfigList">
 								<i class="menu-icon fa fa-caret-right"></i>心跳告警配置</a>
 								<b class="arrow"></b></li>
-							<li id="thirdPartyConfigUpdate"><a href="/cat/s/config?op=thirdPartyRuleConfigs">
+							<!--<li id="thirdPartyConfigUpdate"><a href="/cat/s/config?op=thirdPartyRuleConfigs">
 								<i class="menu-icon fa fa-caret-right"></i>Ping告警配置</a>
-								<b class="arrow"></b></li>
-							<li id="topologyGraphNodeConfigList"><a href="/cat/s/config?op=topologyGraphNodeConfigList">
+								<b class="arrow"></b></li> -->
+							<%-- <li id="topologyGraphNodeConfigList"><a href="/cat/s/config?op=topologyGraphNodeConfigList">
 								<i class="menu-icon fa fa-caret-right"></i>应用节点阈值</a>
 								<b class="arrow"></b></li>
 							<li id="topologyGraphEdgeConfigList"><a href="/cat/s/config?op=topologyGraphEdgeConfigList">
@@ -122,11 +82,11 @@
 								<b class="arrow"></b></li>
 							<li id="topoGraphFormatUpdate"><a href="/cat/s/config?op=topoGraphFormatUpdate">
 								<i class="menu-icon fa fa-caret-right"></i>应用大盘配置</a>
-								<b class="arrow"></b></li>
-							<%-- <li id="activityConfigUpdate"><a href="/cat/s/config?op=activityConfigUpdate">
-								<i class="menu-icon fa fa-caret-right"></i>临时活动配置</a>
 								<b class="arrow"></b></li> --%>
-							<li id="storageGroupConfigUpdate"><a href="/cat/s/config?op=storageGroupConfigUpdate">
+							<%-- <li id="allReportConfig"><a href="/cat/s/config?op=allReportConfig">
+								<i class="menu-icon fa fa-caret-right"></i>报表合并配置</a>
+								<b class="arrow"></b></li> --%>
+							<!--<li id="storageGroupConfigUpdate"><a href="/cat/s/config?op=storageGroupConfigUpdate">
 								<i class="menu-icon fa fa-caret-right"></i>存储分组配置</a>
 								<b class="arrow"></b></li>
 							<li id="storageDatabaseRule"><a href="/cat/s/config?op=storageRule&type=SQL">
@@ -134,37 +94,17 @@
 								<b class="arrow"></b></li>
 							<li id="storageCacheRule"><a href="/cat/s/config?op=storageRule&type=Cache">
 								<i class="menu-icon fa fa-caret-right"></i>缓存访问告警</a>
-								<b class="arrow"></b></li>
+								<b class="arrow"></b></li>-->
 						</ul>
 					</li>
-					<%--  <li id="alert_config" class="hsub">
-					<a href="/cat/s/config?op=networkRuleConfigList" class="dropdown-toggle"> <i class="menu-icon fa fa-bullhorn"></i> <span class="menu-text">系统告警配置</span>
-						<b class="arrow fa fa-angle-down"></b>
-					</a> <b class="arrow"></b>
-						<ul class="submenu">
-							<li id="networkRuleConfigList"><a href="/cat/s/config?op=networkRuleConfigList">
-								<i class="menu-icon fa fa-caret-right"></i>网络告警</a>
-								<b class="arrow"></b></li>
-							<li id="netGraphConfigUpdate"><a href="/cat/s/config?op=netGraphConfigUpdate">
-								<i class="menu-icon fa fa-caret-right"></i>网络拓扑</a>
-								<b class="arrow"></b></li>
-							<li id="databaseRuleConfigList"><a href="/cat/s/config?op=databaseRuleConfigList">
-								<i class="menu-icon fa fa-caret-right"></i>数据库告警</a>
-								<b class="arrow"></b></li>
-							<li id="systemRuleConfigList"><a href="/cat/s/config?op=systemRuleConfigList">
-								<i class="menu-icon fa fa-caret-right"></i>PaaS告警</a>
-								<b class="arrow"></b></li>
-							</li>
-						</ul>
-					</li> --%>
 					<li id="overall_config" class="hsub">
 					<a href="/cat/s/config?op=networkRuleConfigList" class="dropdown-toggle"> <i class="menu-icon glyphicon glyphicon-cog"></i> <span class="menu-text">全局告警配置</span>
 						<b class="arrow fa fa-angle-down"></b>
 					</a> <b class="arrow"></b>
 						<ul class="submenu">
-							<li id="bugConfigUpdate"><a href="/cat/s/config?op=bugConfigUpdate">
+							<%-- <li id="bugConfigUpdate"><a href="/cat/s/config?op=bugConfigUpdate">
 								<i class="menu-icon fa fa-caret-right"></i>框架异常</a>
-								<b class="arrow"></b></li>
+								<b class="arrow"></b></li> --%>
 							<li id="alertPolicy"><a href="/cat/s/config?op=alertPolicy">
 								<i class="menu-icon fa fa-caret-right"></i>告警策略</a>
 								<b class="arrow"></b></li>
@@ -174,12 +114,12 @@
 							<li id="alertSenderConfig"><a href="/cat/s/config?op=alertSenderConfigUpdate">
 								<i class="menu-icon fa fa-caret-right"></i>告警服务端</a>
 								<b class="arrow"></b></li>
-							<li id="blackConfigUpdate"><a href="/cat/s/config?op=blackConfigUpdate">
+							<%-- <li id="blackConfigUpdate"><a href="/cat/s/config?op=blackConfigUpdate">
 								<i class="menu-icon fa fa-caret-right"></i>全局黑名单</a>
-								<b class="arrow"></b></li>
-							<li id="serverFilterUpdate"><a href="/cat/s/config?op=serverFilterConfigUpdate">
+								<b class="arrow"></b></li> --%>
+							<%-- <li id="serverFilterUpdate"><a href="/cat/s/config?op=serverFilterConfigUpdate">
 								<i class="menu-icon fa fa-caret-right"></i>服务端过滤</a>
-								<b class="arrow"></b></li>
+								<b class="arrow"></b></li> --%>
 							<li id="routerConfigUpdate"><a href="/cat/s/config?op=routerConfigUpdate">
 								<i class="menu-icon fa fa-caret-right"></i>客户端路由</a>
 								<b class="arrow"></b></li>

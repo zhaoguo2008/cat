@@ -2,16 +2,15 @@ package com.dianping.cat.analysis;
 
 import java.util.List;
 
-import org.codehaus.plexus.logging.LogEnabled;
-import org.codehaus.plexus.logging.Logger;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.InitializationException;
 import org.unidal.helper.Threads;
 import org.unidal.lookup.ContainerHolder;
 import org.unidal.lookup.annotation.Inject;
+import org.unidal.lookup.extension.Initializable;
+import org.unidal.lookup.extension.InitializationException;
+import org.unidal.lookup.logging.LogEnabled;
+import org.unidal.lookup.logging.Logger;
 
 import com.dianping.cat.Cat;
-import com.dianping.cat.CatConstants;
 import com.dianping.cat.config.server.BlackListManager;
 import com.dianping.cat.message.Message;
 import com.dianping.cat.message.MessageProducer;
@@ -32,8 +31,6 @@ public class RealtimeConsumer extends ContainerHolder implements MessageConsumer
 
 	private PeriodManager m_periodManager;
 
-	private long m_black = -1;
-
 	private Logger m_logger;
 
 	public static final long MINUTE = 60 * 1000L;
@@ -42,24 +39,13 @@ public class RealtimeConsumer extends ContainerHolder implements MessageConsumer
 
 	@Override
 	public void consume(MessageTree tree) {
-		String domain = tree.getDomain();
-		String ip = tree.getIpAddress();
+		long timestamp = tree.getMessage().getTimestamp();
+		Period period = m_periodManager.findPeriod(timestamp);
 
-		if (!m_blackListManager.isBlack(domain, ip)) {
-			long timestamp = tree.getMessage().getTimestamp();
-			Period period = m_periodManager.findPeriod(timestamp);
-
-			if (period != null) {
-				period.distribute(tree);
-			} else {
-				m_serverStateManager.addNetworkTimeError(1);
-			}
+		if (period != null) {
+			period.distribute(tree);
 		} else {
-			m_black++;
-
-			if (m_black % CatConstants.SUCCESS_COUNT == 0) {
-				Cat.logEvent("Discard", domain);
-			}
+			m_serverStateManager.addNetworkTimeError(1);
 		}
 	}
 
@@ -72,7 +58,7 @@ public class RealtimeConsumer extends ContainerHolder implements MessageConsumer
 			long currentStartTime = getCurrentStartTime();
 			Period period = m_periodManager.findPeriod(currentStartTime);
 
-			for (MessageAnalyzer analyzer : period.getAnalzyers()) {
+			for (MessageAnalyzer analyzer : period.getAnalyzers()) {
 				try {
 					analyzer.doCheckpoint(false);
 				} catch (Exception e) {

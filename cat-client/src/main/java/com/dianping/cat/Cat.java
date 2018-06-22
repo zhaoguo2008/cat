@@ -5,15 +5,15 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Date;
 
-import org.codehaus.plexus.PlexusContainer;
-import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.unidal.helper.Files;
 import org.unidal.helper.Properties;
 import org.unidal.initialization.DefaultModuleContext;
 import org.unidal.initialization.Module;
 import org.unidal.initialization.ModuleContext;
 import org.unidal.initialization.ModuleInitializer;
+import org.unidal.lookup.ComponentLookupException;
 import org.unidal.lookup.ContainerLoader;
+import org.unidal.lookup.PlexusContainer;
 
 import com.dianping.cat.configuration.client.entity.ClientConfig;
 import com.dianping.cat.configuration.client.entity.Server;
@@ -138,9 +138,7 @@ public class Cat {
 	}
 
 	public static boolean isInitialized() {
-		synchronized (s_instance) {
-			return s_instance.m_container != null;
-		}
+		return s_init;
 	}
 
 	static void log(String severity, String message) {
@@ -314,7 +312,7 @@ public class Cat {
 	public static Transaction newTransaction(String type, String name) {
 		return Cat.getProducer().newTransaction(type, name);
 	}
-	
+
 	// this should be called when a thread ends to clean some thread local data
 	public static void reset() {
 		// remove me

@@ -13,12 +13,11 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.codehaus.plexus.personality.plexus.lifecycle.phase.Initializable;
 import org.unidal.dal.jdbc.DalException;
 import org.unidal.dal.jdbc.DalNotFoundException;
-import org.unidal.helper.Threads;
 import org.unidal.helper.Threads.Task;
 import org.unidal.lookup.annotation.Inject;
+import org.unidal.lookup.extension.Initializable;
 import org.unidal.lookup.util.StringUtils;
 import org.unidal.tuple.Pair;
 import org.xml.sax.SAXException;
@@ -269,7 +268,7 @@ public class AppConfigManager implements Initializable {
 		if (m_config == null) {
 			m_config = new AppConfig();
 		}
-		Threads.forGroup("cat").start(new ConfigReloadTask());
+//		Threads.forGroup("cat").start(new ConfigReloadTask());
 	}
 
 	public boolean insert(String xml) {
@@ -454,8 +453,10 @@ public class AppConfigManager implements Initializable {
 		Map<String, Integer> operatorMap = new ConcurrentHashMap<String, Integer>();
 		ConfigItem operations = m_config.findConfigItem(OPERATOR);
 
-		for (Item item : operations.getItems().values()) {
-			operatorMap.put(item.getName(), item.getId());
+		if (operations != null && operations.getItems() != null) {
+			for (Item item : operations.getItems().values()) {
+				operatorMap.put(item.getName(), item.getId());
+			}
 		}
 		m_operators = operatorMap;
 	}
