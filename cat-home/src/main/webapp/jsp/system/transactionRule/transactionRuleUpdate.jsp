@@ -26,7 +26,19 @@
 													<option value="count">执行次数</option>
 								                	<option value="avg">响应时间</option>
 								                	<option value="failRatio">失败率</option>
+								                	<option value="max">最大响应时间</option>
 								            	</select>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;是否告警&nbsp;&nbsp;
+                                                                <c:choose>
+                                                                    <c:when test="${model.available}">
+                                                                        <input type="radio" name="transaction.available" value="true" checked />是&nbsp;&nbsp;&nbsp;
+                                                                        <input type="radio" name="transaction.available" value="false" />否
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <input type="radio" name="transaction.available" value="true" />是&nbsp;&nbsp;&nbsp;
+                                                                        <input type="radio" name="transaction.available" value="false" checked />否
+                                                                    </c:otherwise>
+                                                                </c:choose>
 				</tr>
 				<tr><th>${model.content}</th></tr>
 					<tr>
@@ -58,11 +70,13 @@ function update() {
 		name = "All";
 		$("#domain").val("All");
 	}
+
+	var available = $("input[name='transaction.available']:checked").val();
     
     var monitor = $("#monitor").val();
     var split = ";";
     var id = domain + split + type + split + name + split + monitor;
-    window.location.href = "?op=transactionRuleSubmit&configs=" + configStr + "&ruleId=" + id;
+    window.location.href = "?op=transactionRuleSubmit&configs=" + encodeURIComponent(configStr) + "&ruleId=" + encodeURIComponent(id) + "&available=" + encodeURIComponent(available);
 }
 
 	$(document).ready(function() {
@@ -81,7 +95,7 @@ function update() {
 			$("#name").val("All");
 		}
 		
-		$('#application_config').addClass('active open');
+		$('#alert_config').addClass('active open');
 		$('#transactionRule').addClass('active');
 		$(document).delegate("#ruleSubmitButton","click",function(){
 			update();
